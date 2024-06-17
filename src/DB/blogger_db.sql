@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3308:3008
--- Generation Time: Jun 16, 2024 at 09:27 PM
+-- Generation Time: Jun 17, 2024 at 05:40 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -36,17 +36,6 @@ CREATE TABLE `posts` (
   `updated_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `posts`
---
-
-INSERT INTO `posts` (`id`, `user_id`, `title`, `content`, `created_at`, `updated_at`) VALUES
-(4, 4, 'zaa', 'sddcs vddd', '2024-06-16 00:00:00', '2024-06-16 00:00:00'),
-(5, 4, 'an other ', ' vdfs vdds', '2024-06-16 00:00:00', '2024-06-16 00:00:00'),
-(8, 2, 'New', 'deletion test', '2024-06-16 00:00:00', '2024-06-16 00:00:00'),
-(12, 1, 'ds', 'vs', '2024-06-16 20:55:20', '2024-06-16 20:55:20'),
-(13, 1, 'cdvf', 'new tii ihhasdodh ', '2024-06-16 20:55:48', '2024-06-16 21:03:59');
-
 -- --------------------------------------------------------
 
 --
@@ -59,16 +48,6 @@ CREATE TABLE `user` (
   `email` varchar(160) NOT NULL,
   `password` varchar(160) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`id`, `username`, `email`, `password`) VALUES
-(1, 'ayyash', 'ayyash@g.c', '$2y$10$Po5pDfc9SFedFLFnrslNdOd5yOU0I7hhurfzjEYuSwliKyyUx9e.e'),
-(2, 'ay', 'ay@H.L', '$2y$10$zSu/i.HEsnEVkzhqJWoxhe4JcbT/230ESP1cYxNeb5fUNz1UPC.Oi'),
-(3, 'ayy', 'ayy@g.l', '$2y$10$89oSIr7qWlM2c2aedjMmEOsmymvdHvdfPvLIVnWP/qR3klU8/4O4a'),
-(4, 'zaa', 'zaa@j.l', '$2y$10$r9nQHgDaa0fRXFFqbnwY2umvULqvwgBIXtRIJJPc23miKz8o66Oz6');
 
 --
 -- Indexes for dumped tables
@@ -95,13 +74,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
