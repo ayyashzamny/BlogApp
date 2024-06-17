@@ -13,22 +13,6 @@ This is a simple blog application built using PHP and MySQL. The application all
    - Only authenticated users can create, edit, and delete their own blog posts.
    - All users can view the list of blog posts and individual blog posts.
 
-## Database Structure
-
-- **Users Table**:
-  - `id`: INT, Primary Key
-  - `username`: VARCHAR(160)
-  - `email`: VARCHAR(160)
-  - `password`: VARCHAR(160)
-
-- **Posts Table**:
-  - `id`: INT, Primary Key
-  - `user_id`: INT, Foreign Key
-  - `title`: VARCHAR(160)
-  - `content`: TEXT
-  - `created_at`: DATETIME
-  - `updated_at`: DATETIME
-
 ## Setup Instructions
 
 1. **Clone the Repository**:
