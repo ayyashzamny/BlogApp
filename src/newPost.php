@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+// Check if the user is not logged in, redirect to login page
+if (!isset($_SESSION['id'])) {
+    header("Location: login.html");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +19,7 @@
     <link rel="stylesheet" href="Styles/header.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -27,13 +38,13 @@
             <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link " aria-current="page" href="index.php">All Post</a>
+                        <a class="nav-link " aria-current="page" href="index.php">All Posts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">My Post</a>
+                        <a class="nav-link" href="myposts.php">My Post</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Add New</a>
+                        <a class="nav-link active" href="newPost.php">Add New</a>
                     </li>
                 </ul>
             </div>
@@ -47,7 +58,7 @@
                 <div class="blog-post-form">
                     <h1>Create a New Blog Post</h1>
 
-                    <form action="submit_post.php" method="POST">
+                    <form id="postForm" action="submit_post.php" method="POST">
                         <label for="postTitle">Title:</label>
                         <input type="text" id="postTitle" name="postTitle" class="form-control" required>
 
@@ -62,6 +73,45 @@
         </div>
     </div>
 
+    <script>
+        document.getElementById('postForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch('submit_post.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Post Created',
+                            text: 'Your new post has been successfully created!',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = 'index.php';
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while creating the post.'
+                    });
+                });
+        });
+    </script>
 </body>
 
 </html>

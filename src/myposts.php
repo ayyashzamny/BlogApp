@@ -71,10 +71,10 @@ $connection->close();
                         <a class="nav-link" href="index.php">All Posts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">My Posts</a>
+                        <a class="nav-link active" aria-current="page" href="myposts.php">My Posts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="newPost.html">Add New</a>
+                        <a class="nav-link" href="newPost.php">Add New</a>
                     </li>
                 </ul>
             </div>

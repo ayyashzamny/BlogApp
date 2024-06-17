@@ -39,10 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt = $connection->prepare($updateQuery);
     $stmt->bind_param("sssii", $title, $content, $updated_at, $postId, $_SESSION['id']);
     if ($stmt->execute()) {
-        header("Location: myposts.php");
+        echo json_encode(['success' => true]);
         exit();
     } else {
-        echo "Error updating post.";
+        echo json_encode(['success' => false, 'message' => 'Error updating post.']);
+        exit();
     }
 }
 
@@ -62,6 +63,7 @@ $connection->close();
     <link rel="stylesheet" href="Styles/header.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -80,13 +82,13 @@ $connection->close();
             <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link " aria-current="page" href="index.php">All Post</a>
+                        <a class="nav-link" aria-current="page" href="index.php">All Post</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">My Post</a>
+                        <a class="nav-link" href="myposts.php">My Post</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Add New</a>
+                        <a class="nav-link active" href="newPost.php">Add New</a>
                     </li>
                 </ul>
             </div>
@@ -100,7 +102,7 @@ $connection->close();
                 <div class="blog-post-form">
                     <h1>Edit Blog Post</h1>
 
-                    <form action="" method="POST">
+                    <form id="editPostForm" action="" method="POST">
                         <label for="postTitle">Title:</label>
                         <input type="text" id="postTitle" name="postTitle" class="form-control"
                             value="<?php echo htmlspecialchars($post['title']); ?>" required>
@@ -116,6 +118,45 @@ $connection->close();
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('editPostForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch('', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'Your post has been updated.',
+                            icon: 'success'
+                        }).then(() => {
+                            window.location.href = 'myposts.php';
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: data.message || 'An error occurred while updating the post.',
+                            icon: 'error'
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'An error occurred while updating the post.',
+                        icon: 'error'
+                    });
+                });
+        });
+    </script>
 
 </body>
 

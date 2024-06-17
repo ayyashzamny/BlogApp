@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-// Check if the user is not logged in, redirect to login page
-if (!isset($_SESSION['id'])) {
-    header("Location: login.html");
-    exit();
-}
 
 // Include your database connection file
 include ("db_connection.php");
@@ -58,17 +53,23 @@ mysqli_close($connection);
             <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">All Post</a>
+                        <a class="nav-link active" aria-current="page" href="#">All Posts</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="myposts.php">My Post</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="newPost.html">Add New</a>
-                    </li>
+                    <?php if (isset($_SESSION['id'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="myposts.php">My Posts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="newPost.php">Add New</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
-            <a class="btn btn-outline-light" href="logout.php">Log Out</a>
+            <?php if (isset($_SESSION['id'])): ?>
+                <a class="btn btn-outline-light" href="logout.php">Log Out</a>
+            <?php else: ?>
+                <a class="btn btn-outline-light" href="login.html">Log In</a>
+            <?php endif; ?>
         </div>
     </nav>
 
@@ -79,7 +80,8 @@ mysqli_close($connection);
                     <article class="col-md-4 mb-4">
                         <div class="card">
                             <div class="card-header bg-dark text-white">Post By :
-                                <?php echo htmlspecialchars($post['username']); ?></div>
+                                <?php echo htmlspecialchars($post['username']); ?>
+                            </div>
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo htmlspecialchars($post['title']); ?></h5>
                                 <p class="card-text"><?php echo htmlspecialchars($post['content']); ?></p>

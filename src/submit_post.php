@@ -3,8 +3,9 @@ session_start();
 
 // Check if the user is logged in
 if (!isset($_SESSION['id'])) {
-    // Redirect to login page or handle unauthorized access
-    header("Location: login.html");
+    // Unauthorized access
+    $response = ['success' => false, 'message' => 'Unauthorized access'];
+    echo json_encode($response);
     exit();
 }
 
@@ -13,8 +14,8 @@ include ("db_connection.php");
 
 // Retrieve data from the form
 $user_id = $_SESSION['id']; // Assuming user_id is stored in session after login
-$title = $_POST["postTitle"];
-$content = $_POST["postContent"];
+$title = mysqli_real_escape_string($connection, $_POST["postTitle"]);
+$content = mysqli_real_escape_string($connection, $_POST["postContent"]);
 $created_at = date('Y-m-d H:i:s'); // Current date and time for created_at
 $updated_at = $created_at; // Initially, updated_at is the same as created_at
 
@@ -22,20 +23,16 @@ $updated_at = $created_at; // Initially, updated_at is the same as created_at
 $query = "INSERT INTO posts (user_id, title, content, created_at, updated_at) 
           VALUES ('$user_id', '$title', '$content', '$created_at', '$updated_at')";
 
-$result = mysqli_query($connection, $query);
-
-if ($result) {
+if (mysqli_query($connection, $query)) {
     // Post insertion successful
-    header("Location: index.php"); // Redirect to a page showing all posts
-    exit();
+    $response = ['success' => true];
 } else {
     // Error handling
-    $error_message = "Error executing query: " . mysqli_error($connection);
-    header("Location: new_post.php?error=$error_message"); // Redirect back to new post form with error message
-    exit();
+    $response = ['success' => false, 'message' => 'Error executing query: ' . mysqli_error($connection)];
 }
 
+// Close the database connection
+mysqli_close($connection);
 
-// // Close the database connection
-// mysqli_close($connection);
+echo json_encode($response);
 ?>
