@@ -1,12 +1,11 @@
 <?php
 session_start();
 
-
 // Include your database connection file
 include ("db_connection.php");
 
 // Fetch all posts from the database
-$query = "SELECT user.username, posts.title, posts.content, posts.updated_at 
+$query = "SELECT user.username, posts.id, posts.title, posts.content, posts.updated_at 
           FROM posts 
           JOIN user ON posts.user_id = user.id 
           ORDER BY posts.created_at DESC";
@@ -84,7 +83,17 @@ mysqli_close($connection);
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo htmlspecialchars($post['title']); ?></h5>
-                                <p class="card-text"><?php echo htmlspecialchars($post['content']); ?></p>
+                                <p class="card-text">
+                                    <?php
+                                    $content = htmlspecialchars($post['content']);
+                                    if (strlen($content) > 100) {
+                                        echo substr($content, 0, 100) . '...';
+                                    } else {
+                                        echo $content;
+                                    }
+                                    ?>
+                                </p>
+                                <a href="viewPost.php?id=<?php echo $post['id']; ?>" class="btn btn-secondary">Read More</a>
                             </div>
                             <div class="card-footer text-muted">Posted On : <?php echo htmlspecialchars($post['updated_at']); ?>
                             </div>
