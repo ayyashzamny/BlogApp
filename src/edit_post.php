@@ -82,17 +82,30 @@ $connection->close();
             <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="index.php">All Post</a>
+                        <a class="nav-link active" aria-current="page" href="index.php">All Posts</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="myposts.php">My Post</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="newPost.php">Add New</a>
-                    </li>
+                    <?php if (isset($_SESSION['id'])): ?>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="myposts.php">My Posts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="newPost.php">Add New</a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if (isset($_SESSION['is_admin'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="user.php">Edit User</a>
+                        </li>
+
+                    <?php endif; ?>
                 </ul>
             </div>
-            <a class="btn btn-outline-light" href="logout.php">Log Out</a>
+            <?php if (isset($_SESSION['id'])): ?>
+                <a class="btn btn-outline-light" href="logout.php">Log Out</a>
+            <?php else: ?>
+                <a class="btn btn-outline-light" href="login.html">Log In</a>
+            <?php endif; ?>
         </div>
     </nav>
 

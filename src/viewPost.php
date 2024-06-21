@@ -67,7 +67,7 @@ if (isset($_GET['id'])) {
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="index.php">Blogger</a>
+            <a class="navbar-brand" href="#">Blogger</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -79,12 +79,19 @@ if (isset($_GET['id'])) {
                         <a class="nav-link active" aria-current="page" href="index.php">All Posts</a>
                     </li>
                     <?php if (isset($_SESSION['id'])): ?>
+
                         <li class="nav-item">
                             <a class="nav-link" href="myposts.php">My Posts</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="newPost.php">Add New</a>
                         </li>
+                    <?php endif; ?>
+                    <?php if (isset($_SESSION['is_admin'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="user.php">Edit User</a>
+                        </li>
+
                     <?php endif; ?>
                 </ul>
             </div>
@@ -95,6 +102,7 @@ if (isset($_GET['id'])) {
             <?php endif; ?>
         </div>
     </nav>
+
 
     <main class="container mt-5">
         <article class="col-md-8 offset-md-2 mb-4">

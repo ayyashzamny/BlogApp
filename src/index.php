@@ -34,6 +34,7 @@ mysqli_close($connection);
     <link rel="stylesheet" href="styles/index.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- SweetAlert2 CDN -->
 </head>
 
 <body>
@@ -52,15 +53,28 @@ mysqli_close($connection);
             <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">All Posts</a>
+                        <a class="nav-link active" aria-current="page" href="index.php">All Posts</a>
                     </li>
+                    <?php if (!isset($_SESSION['id'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="userguide.php">User Guide</a>
+                        </li>
+                    <?php endif; ?>
+
                     <?php if (isset($_SESSION['id'])): ?>
+
                         <li class="nav-item">
                             <a class="nav-link" href="myposts.php">My Posts</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="newPost.php">Add New</a>
                         </li>
+                    <?php endif; ?>
+                    <?php if (isset($_SESSION['is_admin'])): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="user.php">Edit User</a>
+                        </li>
+
                     <?php endif; ?>
                 </ul>
             </div>
@@ -71,6 +85,8 @@ mysqli_close($connection);
             <?php endif; ?>
         </div>
     </nav>
+
+
 
     <main class="container mt-5">
         <section class="row">
@@ -93,7 +109,12 @@ mysqli_close($connection);
                                     }
                                     ?>
                                 </p>
-                                <a href="viewPost.php?id=<?php echo $post['id']; ?>" class="btn btn-secondary">Read More</a>
+                                <a href="viewPost.php?id=<?php echo $post['id']; ?>" class="btn btn-secondary btn-sm">Read
+                                    More</a>
+                                <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin']): ?>
+                                    <a href="javascript:void(0);" class="btn btn-danger btn-sm"
+                                        onclick="confirmDelete(<?php echo $post['id']; ?>)">Delete</a>
+                                <?php endif; ?>
                             </div>
                             <div class="card-footer text-muted">Posted On : <?php echo htmlspecialchars($post['updated_at']); ?>
                             </div>
@@ -105,6 +126,24 @@ mysqli_close($connection);
             <?php endif; ?>
         </section>
     </main>
+
+    <script>
+        function confirmDelete(postId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = 'delete_post.php?id=' + postId;
+                }
+            })
+        }
+    </script>
 </body>
 
 </html>

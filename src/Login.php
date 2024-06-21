@@ -31,9 +31,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Verify password
         if (password_verify($password, $row['password'])) {
-            // Password is correct, set session and redirect to dashboard
+            // Password is correct, set session
             $_SESSION['id'] = $row['id'];
-            header("Location: index.php");
+            $_SESSION['username'] = $row['username'];
+
+            // Check if the user is admin
+            if ($row['username'] === 'admin') {
+                $_SESSION['is_admin'] = true;
+                header("Location: index.php");
+            } else {
+                header("Location: index.php");
+            }
             exit();
         } else {
             // Invalid password
